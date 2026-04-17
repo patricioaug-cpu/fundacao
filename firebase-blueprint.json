@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Dados do usuário e status de trial",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "device_serial": { "type": "string" },
+        "role": { "type": "string", "enum": ["USER", "ADMIN"] },
+        "status": { "type": "string", "enum": ["TRIAL", "LIBERADO", "BLOQUEADO"] },
+        "trial_start_at": { "type": "string", "format": "date-time" },
+        "trial_end_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email", "device_serial", "role", "status"]
+    },
+    "LoginHistory": {
+      "title": "LoginHistory",
+      "description": "Histórico de logins do usuário",
+      "type": "object",
+      "properties": {
+        "login_at": { "type": "string", "format": "date-time" },
+        "device_serial": { "type": "string" }
+      }
+    },
+    "Memorial": {
+      "title": "Memorial",
+      "description": "Cálculos e memórias salvas pelo usuário",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "foundationType": { "type": "string" },
+        "justification": { "type": "string" },
+        "calculationMemory": { "type": "array", "items": { "type": "string" } },
+        "settlementAnalysis": { "type": "string" },
+        "loadKN": { "type": "number" },
+        "nspt": { "type": "number" }
+      },
+      "required": ["foundationType", "justification", "calculationMemory", "created_at"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Documento principal do usuário"
+    },
+    "/users/{userId}/logins/{loginId}": {
+      "schema": "LoginHistory",
+      "description": "Histórico de logins do usuário"
+    },
+    "/users/{userId}/memorials/{memorialId}": {
+      "schema": "Memorial",
+      "description": "Memórias de cálculo salvas"
+    }
+  }
+}
